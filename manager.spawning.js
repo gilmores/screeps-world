@@ -103,14 +103,14 @@ run:function(room, desiredCreeps) {
             
             let transfererBody = [MOVE,CARRY];
             let transfererBodyCost = 100;
-            let numTransfererBody = Math.floor(roomSpawns[0].room.energyCapacityAvailable / (2 * transfererBodyCost));
+            let numTransfererBody = Math.floor(roomSpawns[0].room.energyCapacityAvailable / (1 * transfererBodyCost));
             let finalTransfererBody = [];
             //if there are zero transferers (existed or spawning) in the room and there need to be transferers, spawn with whatever energy is available, otherwise spawn with half of the total potential energy available
             if (roomTransferers.length == 0 && roomTransferers.length < desiredCreeps.desiredTransferers) {
                 numTransfererBody = Math.floor(roomSpawns[0].room.energyAvailable / transfererBodyCost)
             }
             else {
-                numTransfererBody = Math.floor(roomSpawns[0].room.energyCapacityAvailable / (2 * transfererBodyCost));
+                numTransfererBody = Math.floor(roomSpawns[0].room.energyCapacityAvailable / (1 * transfererBodyCost));
             }
             for (let i = 0; i < numTransfererBody; i++) {
                 finalTransfererBody = finalTransfererBody.concat(transfererBody);

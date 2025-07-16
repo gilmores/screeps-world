@@ -15,12 +15,13 @@ var roleBuilder = {
             }
             //Building Logic
             else if (targets.length) {
-                if (creep.build(targets[0])==ERR_NOT_IN_RANGE) {
+                if (creep.build(targets[0]) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(targets[0]);
                 }
             }
             else {
-                creep.moveTo(Game.flags['Idle.' + creep.memory.homeRoom]);
+                // creep.moveTo(Game.flags['Idle.' + creep.memory.homeRoom]);
+                creep.memory.role = "upgrader";
             }
         }
         else {

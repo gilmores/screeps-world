@@ -1,6 +1,7 @@
 let roleZergling = {
     run:function(creep) {
         //Game.spawns['Spawn1'].spawnCreep([ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE],'Dennis',{memory: {role:'zergling'}})
+        // TODO: change target in memory to id, then get game object by id
         const attackCon = true;
         const followDistance = 2;
         let zerglings = _.filter(Game.creeps, function (c) {return c.memory.role == "zergling"});

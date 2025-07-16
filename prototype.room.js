@@ -8,6 +8,22 @@
  */
 var prototypeRoom = {
     run:function() {
+        Room.prototype.getRoomNumber = function () {
+            if (!this._coordinates) {
+                const match = this.name.match(/^([EW])([0-9]+)([NS])([0-9]+)$/);
+                if (match) {
+                    let x = parseInt(match[2]);
+                    let y = parseInt(match[4]);
+
+                    if (match[1] === 'W') x = -x;
+                    if (match[3] === 'N') y = -y;
+
+                    this._coordinates = { x, y };
+                }
+                else return null;
+            }
+            return this._coordinates;
+        }
         Room.prototype.getSources = function () {
             if (!this._sources) {
                 this._sources = this.find(FIND_SOURCES);

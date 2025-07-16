@@ -1,9 +1,9 @@
-var roleHarvester = {
+var roleRemoteActiveHarvester = {
     run:function(creep){
-        var sources = creep.room.find(FIND_SOURCES);
-        var harvestRoom = creep.memory.chosenRoom;
+        let sources = creep.room.getSources();
+        const harvestRoom = creep.memory.chosenRoom;
         //change creep memory based on creep energy storage
-        if (creep.store[RESOURCE_ENERGY] == 0){
+        if (creep.store[RESOURCE_ENERGY] == 0) {
             creep.memory.harvesting = true;
         }
         if (creep.store[RESOURCE_ENERGY] == creep.store.getCapacity()) {
@@ -34,4 +34,4 @@ var roleHarvester = {
     }
 }
 
-module.exports = roleHarvester;
+module.exports = roleRemoteActiveHarvester;

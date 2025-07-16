@@ -20,7 +20,7 @@ let roleBuilder = require('role.builder');
 let roleRepairer = require('role.repairer');
 let roleTransferer = require('role.transferer');
 let roleDestroyer = require('role.destroyer');
-let roleOtherRoomActiveHarvester = require('role.otherRoomActiveHarvester');
+let roleRemoteActiveHarvester = require('role.remoteActiveHarvester');
 let roleClaimer = require('role.claimer');
 let roleZergling = require('role.zergling');
 let managerSpawning = require('manager.spawning');
@@ -63,7 +63,7 @@ module.exports.loop = function () {
         else if (creep.memory.role == "transferer") roleTransferer.run(creep);
         else if (creep.memory.role == "tester") roleTester.run(creep);
         else if (creep.memory.role == "destroyer") roleDestroyer.run(creep);
-        else if (creep.memory.role == "otherRoomActiveHarvester") roleOtherRoomActiveHarvester.run(creep);
+        else if (creep.memory.role == "remoteActiveHarvester") roleRemoteActiveHarvester.run(creep);
         else if (creep.memory.role == "claimer") roleClaimer.run(creep);
         else if (creep.memory.role == "zergling") roleZergling.run(creep);
         ++totalCreeps;
@@ -113,7 +113,7 @@ module.exports.loop = function () {
             desiredContainerHarvesters = Object.keys(controlledRooms[i].getSources()).length;
             desiredTransporters = 0;
             desiredActiveHarvesters = 0;
-            desiredUpgraders = 5;
+            desiredUpgraders = 4;
             desiredBuilders = 1;
             desiredRepairers = 0;
             desiredTransferers = 2;
@@ -122,7 +122,7 @@ module.exports.loop = function () {
             desiredContainerHarvesters = Object.keys(controlledRooms[i].getSources()).length;
             desiredTransporters = 0;
             desiredActiveHarvesters = 0;
-            desiredUpgraders = 5;
+            desiredUpgraders = 3;
             desiredBuilders = 1;
             desiredRepairers = 0;
             desiredTransferers = 3;
@@ -131,7 +131,7 @@ module.exports.loop = function () {
             desiredContainerHarvesters = Object.keys(controlledRooms[i].getSources()).length;
             desiredTransporters = 0;
             desiredActiveHarvesters = 0;
-            desiredUpgraders = 5;
+            desiredUpgraders = 2;
             desiredBuilders = 1;
             desiredRepairers = 0;
             desiredTransferers = 3;

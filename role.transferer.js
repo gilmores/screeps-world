@@ -3,26 +3,28 @@ var roleTransferer = {
         let targetsStorage = creep.room.storage;
         //define structures that have or need energy
         //containers are any container that has at least half of the creep's storage capacity
-        var roomSpawns = creep.room.find(FIND_STRUCTURES, {
+        let roomSpawns = creep.room.find(FIND_STRUCTURES, {
             filter: (structure) => {
-                return(structure.structureType == STRUCTURE_SPAWN);}
-        });
-        var containers = creep.room.find(FIND_STRUCTURES, {
-            filter: (structure) => {
-                return (structure.structureType == STRUCTURE_CONTAINER) &&
-                structure.store[RESOURCE_ENERGY] >= creep.store.getCapacity(RESOURCE_ENERGY) / 2;
+                return structure.structureType == STRUCTURE_SPAWN
+                && structure.store[RESOURCE_ENERGY] < structure.store.getCapacity(RESOURCE_ENERGY);
             }
         });
-        var towers = creep.room.find(FIND_STRUCTURES, {
+        let containers = creep.room.find(FIND_STRUCTURES, {
             filter: (structure) => {
-                return (structure.structureType == STRUCTURE_TOWER) &&
-                structure.store[RESOURCE_ENERGY] < structure.store.getCapacity(RESOURCE_ENERGY) - (structure.store.getCapacity(RESOURCE_ENERGY) / 20);
+                return structure.structureType == STRUCTURE_CONTAINER
+                && structure.store[RESOURCE_ENERGY] >= creep.store.getCapacity(RESOURCE_ENERGY) / 2;
             }
         });
-        var extensions = creep.room.find(FIND_STRUCTURES, {
+        let towers = creep.room.find(FIND_STRUCTURES, {
             filter: (structure) => {
-                return (structure.structureType == STRUCTURE_EXTENSION) &&
-                structure.store[RESOURCE_ENERGY] < structure.store.getCapacity(RESOURCE_ENERGY);
+                return structure.structureType == STRUCTURE_TOWER
+                && structure.store[RESOURCE_ENERGY] < structure.store.getCapacity(RESOURCE_ENERGY) - (structure.store.getCapacity(RESOURCE_ENERGY) / 20);
+            }
+        });
+        let extensions = creep.room.find(FIND_STRUCTURES, {
+            filter: (structure) => {
+                return structure.structureType == STRUCTURE_EXTENSION
+                && structure.store[RESOURCE_ENERGY] < structure.store.getCapacity(RESOURCE_ENERGY);
             }
         });
         let chosenExtension = creep.pos.findClosestByPath(extensions);
@@ -33,28 +35,29 @@ var roleTransferer = {
         if (creep.store[RESOURCE_ENERGY] == 0) {
             creep.memory.draining = true;
         }
-        if (creep.store.getUsedCapacity() == creep.store.getCapacity()) {
+        if (creep.store.getUsedCapacity() == creep.store.getCapacity() && (chosenExtension || chosenTower || roomSpawns)) {
             creep.memory.draining = false;
         }
         if (creep.memory.draining && creep.ticksToLive > 40 && (droppedResources || containers.length || targetsStorage)) {
-            if (droppedResources && droppedResources.amount > creep.store.getCapacity()/3) {
+            if (droppedResources && droppedResources.amount > creep.store.getCapacity() / 3) {
                 if (creep.pickup(droppedResources) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(droppedResources);
                 }
             }
-            else if (containers.length){
+            else if (containers.length) {
+                if (droppedResources) creep.pickup(droppedResources);
                 if (creep.withdraw(containers[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(containers[0].pos);
                 }
             }
-            else if (targetsStorage){
+            else if (targetsStorage) {
                 if (creep.withdraw(targetsStorage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(targetsStorage);
                 }
             }
         }
         else {
-            if (roomSpawns && roomSpawns[0].store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
+            if (roomSpawns[0] && roomSpawns[0].store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
                 if (creep.transfer(roomSpawns[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE){
                     creep.moveTo(roomSpawns[0]);
                 }
@@ -69,9 +72,9 @@ var roleTransferer = {
                     creep.moveTo(towers[0]);
                 }
             }
-            else if (targetsStorage && targetsStorage.store.getFreeCapacity(RESOURCE_ENERGY) > 0){
+            else if (targetsStorage && targetsStorage.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
                 if (targetsStorage.store[RESOURCE_ENERGY] < targetsStorage.store.getCapacity(RESOURCE_ENERGY)) {
-                    if (creep.transfer(targetsStorage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE){
+                    if (creep.transfer(targetsStorage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                         creep.moveTo(targetsStorage);
                     }
                 }

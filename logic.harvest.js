@@ -48,6 +48,12 @@ var logicHarvest = {
                     creep.moveTo(targetsStorage);
                 }
             }
+            else if (containers.length) {
+                let closestContainer = creep.pos.findClosestByPath(containers);
+                if (creep.withdraw(closestContainer, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(closestContainer);
+                }
+            }
             else {
                 creep.moveTo(Game.flags['Idle.'+creep.memory.homeRoom]);
             }
